@@ -9,6 +9,8 @@ import { HealthModule } from './health/health.module';
 import configuration from './config/configuration';
 import * as pino from 'pino';
 import { SeederModule } from '#/seeder/seeder.module';
+import { PeminjamModule } from './peminjam/peminjam.module';
+import { BarangModule } from './barang/barang.module';
 
 @Module({
   imports: [
@@ -96,6 +98,8 @@ import { SeederModule } from '#/seeder/seeder.module';
     SeederModule,
     UsersModule,
     HealthModule,
+    PeminjamModule,
+    BarangModule,
   ],
 })
 export class AppModule {}
