@@ -1,21 +1,36 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreatePeminjamDto } from './dto/create-peminjam.dto';
-import { UpdatePeminjamDto } from './dto/update-peminjam.dto';
+import { CreatePeranDto } from './dto/create-peran.dto';
+import { UpdatePeranDto } from './dto/update-peran.dto';
 import { EntityNotFoundError, Repository } from 'typeorm';
-import { Peminjam } from './entities/peminjam.entity';
+import { Peran, rolePeran } from './entities/peran.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class PeminjamService {
+export class peranService {
   constructor(
-    @InjectRepository(Peminjam)
-    private peminjamRepository: Repository<Peminjam>,
+    @InjectRepository(Peran)
+    private peranRepository: Repository<Peran>,
   ) {}
 
-  async create(createPeminjamDto: CreatePeminjamDto) {
-    const result = await this.peminjamRepository.insert(createPeminjamDto);
+  async create(createPeranDto: CreatePeranDto) {
+    createPeranDto.Peran = createPeranDto.Peran.toLowerCase();
+    const iniPeran = new Peran();
 
-    return this.peminjamRepository.findOneOrFail({
+    let peran;
+
+    if (createPeranDto.Peran == 'admin') {
+      peran = rolePeran.Admin;
+    } else if (createPeranDto.Peran == 'petugas') {
+      peran = rolePeran.Petugas;
+    } else if (createPeranDto.Peran == 'peminjam') {
+      peran = rolePeran.Peminjam;
+    }
+
+    iniPeran.Role = peran;
+
+    const result = await this.peranRepository.insert(iniPeran);
+
+    return this.peranRepository.findOneOrFail({
       where: {
         id: result.identifiers[0].id,
       },
@@ -23,12 +38,12 @@ export class PeminjamService {
   }
 
   findAll() {
-    return this.peminjamRepository.findAndCount();
+    return this.peranRepository.findAndCount();
   }
 
   async findOne(id: string) {
     try {
-      return await this.peminjamRepository.findOneOrFail({
+      return await this.peranRepository.findOneOrFail({
         where: {
           id,
         },
@@ -48,9 +63,9 @@ export class PeminjamService {
     }
   }
 
-  async update(id: string, updatePeminjamDto: UpdatePeminjamDto) {
+  async update(id: string, updatePeranDto: UpdatePeranDto) {
     try {
-      await this.peminjamRepository.findOneOrFail({
+      await this.peranRepository.findOneOrFail({
         where: {
           id,
         },
@@ -69,9 +84,16 @@ export class PeminjamService {
       }
     }
 
-    await this.peminjamRepository.update(id, updatePeminjamDto);
+    const partialUpdate = {
+      ...updatePeranDto,
+      Role:
+        updatePeranDto.Peran === 'baik'
+          ? rolePeran.Admin
+          : rolePeran.Petugas || rolePeran.Peminjam,
+    };
+    await this.peranRepository.update(id, partialUpdate);
 
-    return this.peminjamRepository.findOneOrFail({
+    return this.peranRepository.findOneOrFail({
       where: {
         id,
       },
@@ -80,7 +102,7 @@ export class PeminjamService {
 
   async remove(id: string) {
     try {
-      await this.peminjamRepository.findOneOrFail({
+      await this.peranRepository.findOneOrFail({
         where: {
           id,
         },
@@ -99,6 +121,6 @@ export class PeminjamService {
       }
     }
 
-    await this.peminjamRepository.softDelete(id);
+    await this.peranRepository.softDelete(id);
   }
 }

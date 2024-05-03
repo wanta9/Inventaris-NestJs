@@ -14,15 +14,17 @@ export class BarangService {
   ) {}
 
   async create(createBarangDto: CreateBarangDto) {
+    createBarangDto.kondisi = createBarangDto.kondisi.toLowerCase();
     const barang = new Barang();
-    barang.name = createBarangDto.nama;
+    barang.nama = createBarangDto.nama;
     barang.gambar = createBarangDto.gambar;
     barang.deskripsi = createBarangDto.deskripsi;
     barang.jumlah = createBarangDto.jumlah;
     barang.harga = createBarangDto.harga;
 
-    let kondisi = barang.kondisi;
-    if (kondisi == 'baik') {
+    let kondisi;
+
+    if (createBarangDto.kondisi == 'baik') {
       kondisi = KondisiBarang.Baik;
     } else {
       kondisi = KondisiBarang.Rusak;
@@ -84,14 +86,17 @@ export class BarangService {
         throw e;
       }
     }
+    const partialUpdate = {
+      ...updateBarangDto,
+      kondisi:
+        updateBarangDto.kondisi === 'baik'
+          ? KondisiBarang.Baik
+          : KondisiBarang.Rusak,
+    };
 
-    await this.barangRepository.update(id, UpdateBarangDto);
+    await this.barangRepository.update(id, partialUpdate);
 
-    return this.barangRepository.findOneOrFail({
-      where: {
-        id,
-      },
-    });
+    return this.barangRepository.findOneOrFail({ where: { id } });
   }
 
   async remove(id: string) {

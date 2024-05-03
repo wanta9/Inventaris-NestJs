@@ -17,9 +17,10 @@ import { BarangService } from './barang.service';
 export class BarangController {
   constructor(private readonly barangService: BarangService) {}
   @Post()
-  async create(@Body() CreateBarangDto: CreateBarangDto) {
+  async create(@Body() createBarangDto: CreateBarangDto) {
+    createBarangDto.kondisi = createBarangDto.kondisi.toLowerCase();
     return {
-      data: await this.barangService.create(CreateBarangDto),
+      data: await this.barangService.create(createBarangDto),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
