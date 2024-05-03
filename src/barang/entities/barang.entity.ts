@@ -8,18 +8,18 @@ import {
 } from 'typeorm';
 
 // Definisi enum di luar kelas
+
 export enum KondisiBarang {
   Baik = 'baik',
   Rusak = 'rusak',
 }
-
 @Entity()
 export class Barang {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ nullable: true })
-  name: string;
+  nama: string;
 
   @Column({ nullable: true })
   gambar: string;

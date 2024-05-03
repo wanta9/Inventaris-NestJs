@@ -1,21 +1,21 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreatePeminjamDto } from './dto/create-peminjam.dto';
-import { UpdatePeminjamDto } from './dto/update-peminjam.dto';
+import { CreateRuanganDto } from './dto/create-ruangan.dto';
+import { UpdateRuanganDto } from './dto/update-ruangan.dto';
 import { EntityNotFoundError, Repository } from 'typeorm';
-import { Peminjam } from './entities/peminjam.entity';
+import { Ruangan } from './entities/ruangan.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class PeminjamService {
+export class ruanganService {
   constructor(
-    @InjectRepository(Peminjam)
-    private peminjamRepository: Repository<Peminjam>,
+    @InjectRepository(Ruangan)
+    private ruanganRepository: Repository<Ruangan>,
   ) {}
 
-  async create(createPeminjamDto: CreatePeminjamDto) {
-    const result = await this.peminjamRepository.insert(createPeminjamDto);
+  async create(createRuanganDTO: CreateRuanganDto) {
+    const result = await this.ruanganRepository.insert(createRuanganDTO);
 
-    return this.peminjamRepository.findOneOrFail({
+    return this.ruanganRepository.findOneOrFail({
       where: {
         id: result.identifiers[0].id,
       },
@@ -23,12 +23,12 @@ export class PeminjamService {
   }
 
   findAll() {
-    return this.peminjamRepository.findAndCount();
+    return this.ruanganRepository.findAndCount();
   }
 
   async findOne(id: string) {
     try {
-      return await this.peminjamRepository.findOneOrFail({
+      return await this.ruanganRepository.findOneOrFail({
         where: {
           id,
         },
@@ -48,9 +48,9 @@ export class PeminjamService {
     }
   }
 
-  async update(id: string, updatePeminjamDto: UpdatePeminjamDto) {
+  async update(id: string, updateRuanganDTO: UpdateRuanganDto) {
     try {
-      await this.peminjamRepository.findOneOrFail({
+      await this.ruanganRepository.findOneOrFail({
         where: {
           id,
         },
@@ -69,9 +69,9 @@ export class PeminjamService {
       }
     }
 
-    await this.peminjamRepository.update(id, updatePeminjamDto);
+    await this.ruanganRepository.update(id, updateRuanganDTO);
 
-    return this.peminjamRepository.findOneOrFail({
+    return this.ruanganRepository.findOneOrFail({
       where: {
         id,
       },
@@ -80,7 +80,7 @@ export class PeminjamService {
 
   async remove(id: string) {
     try {
-      await this.peminjamRepository.findOneOrFail({
+      await this.ruanganRepository.findOneOrFail({
         where: {
           id,
         },
@@ -99,6 +99,6 @@ export class PeminjamService {
       }
     }
 
-    await this.peminjamRepository.softDelete(id);
+    await this.ruanganRepository.softDelete(id);
   }
 }
