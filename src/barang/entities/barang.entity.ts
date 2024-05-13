@@ -19,6 +19,9 @@ export class Barang {
   id: string;
 
   @Column({ nullable: true })
+  kode: string;
+
+  @Column({ nullable: true })
   nama: string;
 
   @Column({ nullable: true })

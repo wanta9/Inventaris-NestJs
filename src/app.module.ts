@@ -13,6 +13,9 @@ import { PeminjamModule } from './peminjam/peminjam.module';
 import { BarangModule } from './barang/barang.module';
 import { RuanganModule } from './ruangan/ruangan.module';
 import { PeranModule } from './peran/peran.module';
+import { AkunModule } from './akun/akun.module';
+import { PetugasModule } from './petugas/petugas.module';
+import { BarangMasukModule } from './barang-masuk/barang-masuk.module';
 
 @Module({
   imports: [
@@ -104,6 +107,9 @@ import { PeranModule } from './peran/peran.module';
     BarangModule,
     RuanganModule,
     PeranModule,
+    AkunModule,
+    PetugasModule,
+    BarangMasukModule,
   ],
 })
 export class AppModule {}

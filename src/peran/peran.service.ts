@@ -15,6 +15,7 @@ export class peranService {
   async create(createPeranDto: CreatePeranDto) {
     createPeranDto.Peran = createPeranDto.Peran.toLowerCase();
     const iniPeran = new Peran();
+    // iniPeran.akunId = createPeranDto.akunId;
 
     let peran;
 

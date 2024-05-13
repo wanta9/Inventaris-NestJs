@@ -16,6 +16,7 @@ export class BarangService {
   async create(createBarangDto: CreateBarangDto) {
     createBarangDto.kondisi = createBarangDto.kondisi.toLowerCase();
     const barang = new Barang();
+    barang.kode = createBarangDto.kode;
     barang.nama = createBarangDto.nama;
     barang.gambar = createBarangDto.gambar;
     barang.deskripsi = createBarangDto.deskripsi;

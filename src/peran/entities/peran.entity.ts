@@ -1,3 +1,4 @@
+import { Akun } from '#/akun/entities/akun.entity';
 import {
   Column,
   CreateDateColumn,
@@ -5,6 +6,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 export enum rolePeran {
@@ -12,6 +14,7 @@ export enum rolePeran {
   Petugas = 'petugas',
   Peminjam = 'peminjam',
 }
+
 @Entity()
 export class Peran {
   @PrimaryGeneratedColumn('uuid')
@@ -19,6 +22,9 @@ export class Peran {
 
   @Column({ nullable: true })
   Role: rolePeran;
+
+  @OneToMany(() => Akun, (akun) => akun.peran)
+  akun: Akun[];
 
   @CreateDateColumn({
     type: 'timestamp with time zone',

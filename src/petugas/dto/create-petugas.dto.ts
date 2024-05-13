@@ -1,12 +1,9 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CreatePeminjamDto {
+export class CreatePetugasDto {
   @IsNotEmpty()
   akunId: string;
 
   @IsNotEmpty()
-  NISN: number;
-
-  @IsNotEmpty()
-  kelas: string;
+  NIP: string;
 }

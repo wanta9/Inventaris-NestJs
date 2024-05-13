@@ -1,49 +1,48 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreatePeminjamDto } from './dto/create-peminjam.dto';
-import { UpdatePeminjamDto } from './dto/update-peminjam.dto';
+import { CreatePetugasDto } from './dto/create-petugas.dto';
+import { UpdatePetugasDto } from './dto/update-petugas.dto';
 import { EntityNotFoundError, Repository } from 'typeorm';
-import { Peminjam } from './entities/peminjam.entity';
+import { Petugas } from './entities/petugas.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Akun } from '#/akun/entities/akun.entity';
 
 @Injectable()
-export class PeminjamService {
+export class PetugasService {
   constructor(
-    @InjectRepository(Peminjam)
-    private peminjamRepository: Repository<Peminjam>,
+    @InjectRepository(Petugas)
+    private petugasRepository: Repository<Petugas>,
     @InjectRepository(Akun)
     private akunRepository: Repository<Akun>,
   ) {}
 
-  async create(createPeminjamDto: CreatePeminjamDto) {
+  async create(createPetugasDto: CreatePetugasDto) {
     const akun = await this.akunRepository.findOneOrFail({
       where: {
-        id: createPeminjamDto.akunId,
+        id: createPetugasDto.akunId,
       },
     });
-    const peminjam = new Peminjam();
-    peminjam.akun = akun;
-    peminjam.NISN = createPeminjamDto.NISN;
-    peminjam.kelas = createPeminjamDto.kelas;
+    const petugas = new Petugas();
+    petugas.akun = akun;
+    petugas.NIP = createPetugasDto.NIP;
 
-    const result = await this.peminjamRepository.insert(peminjam);
+    const result = await this.petugasRepository.insert(petugas);
 
-    const results = await this.peminjamRepository
-      .createQueryBuilder('peminjam')
-      .leftJoinAndSelect('peminjam.akun', 'akun')
-      .where('peminjam.id = :id', { id: result.identifiers[0].id })
+    const results = await this.petugasRepository
+      .createQueryBuilder('petugas')
+      .leftJoinAndSelect('petugas.akun', 'akun')
+      .where('petugas.id = :id', { id: result.identifiers[0].id })
       .getOneOrFail();
 
     return results[0];
   }
 
   findAll() {
-    return this.peminjamRepository.findAndCount();
+    return this.petugasRepository.findAndCount();
   }
 
   async findOne(id: string) {
     try {
-      return await this.peminjamRepository.findOneOrFail({
+      return await this.petugasRepository.findOneOrFail({
         where: {
           id,
         },
@@ -63,9 +62,9 @@ export class PeminjamService {
     }
   }
 
-  async update(id: string, updatePeminjamDto: UpdatePeminjamDto) {
+  async update(id: string, updatePetugasDto: UpdatePetugasDto) {
     try {
-      await this.peminjamRepository.findOneOrFail({
+      await this.petugasRepository.findOneOrFail({
         where: {
           id,
         },
@@ -84,9 +83,9 @@ export class PeminjamService {
       }
     }
 
-    await this.peminjamRepository.update(id, updatePeminjamDto);
+    await this.petugasRepository.update(id, updatePetugasDto);
 
-    return this.peminjamRepository.findOneOrFail({
+    return this.petugasRepository.findOneOrFail({
       where: {
         id,
       },
@@ -95,7 +94,7 @@ export class PeminjamService {
 
   async remove(id: string) {
     try {
-      await this.peminjamRepository.findOneOrFail({
+      await this.petugasRepository.findOneOrFail({
         where: {
           id,
         },
@@ -114,6 +113,6 @@ export class PeminjamService {
       }
     }
 
-    await this.peminjamRepository.softDelete(id);
+    await this.petugasRepository.softDelete(id);
   }
 }

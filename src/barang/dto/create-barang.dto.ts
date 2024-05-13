@@ -3,6 +3,9 @@ import { Transform, TransformFnParams } from 'class-transformer';
 
 export class CreateBarangDto {
   @IsNotEmpty()
+  kode: string;
+
+  @IsNotEmpty()
   nama: string;
 
   @IsNotEmpty()
