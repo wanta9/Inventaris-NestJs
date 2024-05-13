@@ -9,7 +9,6 @@ import {
   ParseUUIDPipe,
   HttpStatus,
 } from '@nestjs/common';
-import { BarangModule } from './barang.module';
 import { CreateBarangDto } from './dto/create-barang.dto';
 import { UpdateBarangDto } from './dto/update-barang.dto';
 import { BarangService } from './barang.service';

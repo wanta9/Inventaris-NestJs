@@ -10,17 +10,14 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Peminjam {
+export class Petugas {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ nullable: true })
-  NISN: number;
+  NIP: string;
 
-  @Column({ nullable: true })
-  kelas: string;
-
-  @ManyToOne(() => Akun, (akun) => akun.peminjam)
+  @ManyToOne(() => Akun, (akun) => akun.petugas)
   akun: Akun;
 
   @CreateDateColumn({
