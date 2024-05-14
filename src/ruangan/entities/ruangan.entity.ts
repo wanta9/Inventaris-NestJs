@@ -1,8 +1,10 @@
+import { RuanganBarang } from '#/ruangan-barang/entities/ruangan-barang.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -14,6 +16,9 @@ export class Ruangan {
 
   @Column({ nullable: true })
   Letak_Barang: string;
+
+  @OneToMany(() => RuanganBarang, (ruanganBarang) => ruanganBarang.ruangan)
+  ruanganBarang: RuanganBarang[];
 
   @CreateDateColumn({
     type: 'timestamp with time zone',

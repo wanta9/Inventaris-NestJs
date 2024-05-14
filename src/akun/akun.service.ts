@@ -112,8 +112,14 @@ export class AkunService {
     const partialUpdate = {
       ...updateAkunDto,
       status:
-        updateAkunDto.status == 'aktif'
+        updateAkunDto.status === 'aktif'
           ? statusBarang.Aktif
+          : updateAkunDto.status === 'pending'
+          ? statusBarang.Pending
+          : updateAkunDto.status === 'diterima'
+          ? statusBarang.Diterima
+          : updateAkunDto.status === 'ditolak'
+          ? statusBarang.Ditolak
           : statusBarang.TidakAktif,
       isOnline: updateAkunDto.isOnline,
     };
