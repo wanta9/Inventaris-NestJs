@@ -16,6 +16,10 @@ import { PeranModule } from './peran/peran.module';
 import { AkunModule } from './akun/akun.module';
 import { PetugasModule } from './petugas/petugas.module';
 import { BarangMasukModule } from './barang-masuk/barang-masuk.module';
+import { RuanganBarangModule } from './ruangan-barang/ruangan-barang.module';
+import { BarangKeluarModule } from './barang-keluar/barang-keluar.module';
+import { BarangRusakModule } from './barang-rusak/barang-rusak.module';
+import { PeminjamanBarangModule } from './peminjaman-barang/peminjaman-barang.module';
 
 @Module({
   imports: [
@@ -110,6 +114,10 @@ import { BarangMasukModule } from './barang-masuk/barang-masuk.module';
     AkunModule,
     PetugasModule,
     BarangMasukModule,
+    RuanganBarangModule,
+    BarangKeluarModule,
+    BarangRusakModule,
+    PeminjamanBarangModule,
   ],
 })
 export class AppModule {}

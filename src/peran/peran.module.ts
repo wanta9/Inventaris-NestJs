@@ -7,6 +7,6 @@ import { Peran } from './entities/peran.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Peran])],
   controllers: [PeranController],
-  providers: [peranService, peranService],
+  providers: [peranService],
 })
 export class PeranModule {}

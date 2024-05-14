@@ -1,8 +1,10 @@
+import { RuanganBarang } from '#/ruangan-barang/entities/ruangan-barang.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -38,6 +40,15 @@ export class Barang {
 
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   harga: number;
+
+  @OneToMany(() => RuanganBarang, (ruanganBarang) => ruanganBarang.barang)
+  ruanganBarang: RuanganBarang[];
+
+  // @OneToMany(() => BarangMasuk, (barangMasuk) => barangMasuk.barang)
+  // barangMasuk: BarangMasuk[];
+
+  // @OneToMany(() => BarangKeluar, (barangKeluar) => barangKeluar.barang)
+  // barangKeluar: BarangKeluar[];
 
   @CreateDateColumn()
   createdAt: Date;
