@@ -20,6 +20,8 @@ import { RuanganBarangModule } from './ruangan-barang/ruangan-barang.module';
 import { BarangKeluarModule } from './barang-keluar/barang-keluar.module';
 import { BarangRusakModule } from './barang-rusak/barang-rusak.module';
 import { PeminjamanBarangModule } from './peminjaman-barang/peminjaman-barang.module';
+import { PeminjamanModule } from './peminjaman/peminjaman.module';
+import { KoleksiModule } from './koleksi/koleksi.module';
 
 @Module({
   imports: [
@@ -118,6 +120,8 @@ import { PeminjamanBarangModule } from './peminjaman-barang/peminjaman-barang.mo
     BarangKeluarModule,
     BarangRusakModule,
     PeminjamanBarangModule,
+    PeminjamanModule,
+    KoleksiModule,
   ],
 })
 export class AppModule {}

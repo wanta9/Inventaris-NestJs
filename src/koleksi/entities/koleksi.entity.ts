@@ -1,4 +1,4 @@
-import { Koleksi } from '#/koleksi/entities/koleksi.entity';
+import { PeminjamanBarang } from '#/peminjaman-barang/entities/peminjaman-barang.entity';
 import { Peminjaman } from '#/peminjaman/entities/peminjaman.entity';
 import { RuanganBarang } from '#/ruangan-barang/entities/ruangan-barang.entity';
 import {
@@ -13,24 +13,27 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class PeminjamanBarang {
+export class Koleksi {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ nullable: true })
   jumlah: number;
 
-  @OneToMany(() => Koleksi, (koleksi) => koleksi.peminjamanBarang)
-  koleksi: Koleksi[];
+  // @OneToMany(() => BarangKeluar, (barangkeluar) => barangkeluar.ruanganBarang)
+  // barangkeluar: BarangKeluar[];
 
-  @ManyToOne(
-    () => RuanganBarang,
-    (ruanganBarang) => ruanganBarang.peminjamanBarang,
-  )
+  // @OneToMany(() => BarangRusak, (barangRusak) => barangRusak.ruanganBarang)
+  // barangRusak: BarangRusak[];
+
+  @ManyToOne(() => RuanganBarang, (ruanganBarang) => ruanganBarang.koleksi)
   ruanganBarang: RuanganBarang;
 
-  @ManyToOne(() => Peminjaman, (peminjaman) => peminjaman.peminjamanBarang)
-  peminjaman: Peminjaman;
+  @ManyToOne(
+    () => PeminjamanBarang,
+    (peminjamanBarang) => peminjamanBarang.koleksi,
+  )
+  peminjamanBarang: PeminjamanBarang;
 
   // @ManyToOne(() => Barang, (barang) => barang.ruanganBarang)
   // barang: Barang;
