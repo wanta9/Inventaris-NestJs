@@ -1,10 +1,12 @@
 import { Akun } from '#/akun/entities/akun.entity';
+import { Peminjaman } from '#/peminjaman/entities/peminjaman.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -23,6 +25,8 @@ export class Peminjam {
   @ManyToOne(() => Akun, (akun) => akun.peminjam)
   akun: Akun;
 
+  @OneToMany(() => Peminjaman, (peminjaman) => peminjaman.peminjam)
+  peminjaman: Peminjaman[];
   @CreateDateColumn({
     type: 'timestamp with time zone',
     nullable: false,

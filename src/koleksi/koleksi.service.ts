@@ -4,29 +4,27 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreatePeminjamanBarangDto } from './dto/create-peminjaman-barang.dto';
-import { UpdatePeminjamanBarangDto } from './dto/update-peminjaman-barang.dto';
+import { CreateKoleksiDto } from './dto/create-koleksi.dto';
+import { UpdateKoleksiDto } from './dto/update-koleksi.dto';
 import { EntityNotFoundError, Repository } from 'typeorm';
-import { PeminjamanBarang } from './entities/peminjaman-barang.entity';
+import { Koleksi } from './entities/koleksi.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RuanganBarang } from '#/ruangan-barang/entities/ruangan-barang.entity';
-import { Peminjaman } from '#/peminjaman/entities/peminjaman.entity';
+import { PeminjamanBarang } from '#/peminjaman-barang/entities/peminjaman-barang.entity';
 
 @Injectable()
-export class PeminjamanBarangService {
+export class KoleksiService {
   constructor(
-    @InjectRepository(PeminjamanBarang)
-    private peminjamanBarangRepository: Repository<PeminjamanBarang>,
+    @InjectRepository(Koleksi)
+    private koleksiRepository: Repository<Koleksi>,
     @InjectRepository(RuanganBarang)
     private ruanganBarangRepository: Repository<RuanganBarang>,
-    @InjectRepository(Peminjaman)
-    private peminjamanRepository: Repository<Peminjaman>,
+    @InjectRepository(PeminjamanBarang)
+    private peminjamanBarangRepository: Repository<PeminjamanBarang>,
   ) {}
 
-  async create(
-    createPeminjamanBarangDto: CreatePeminjamanBarangDto,
-  ): Promise<PeminjamanBarang> {
-    const { ruanganBarangId, peminjamanId, jumlah } = createPeminjamanBarangDto;
+  async create(createKoleksiDto: CreateKoleksiDto): Promise<Koleksi> {
+    const { ruanganBarangId, peminjamanBarangId, jumlah } = createKoleksiDto;
 
     // Cari Ruangan berdasarkan ID
     const ruanganBarang = await this.ruanganBarangRepository.findOneBy({
@@ -34,48 +32,46 @@ export class PeminjamanBarangService {
     });
     if (!ruanganBarang) {
       throw new NotFoundException(
-        `PeminjamanBarang with ID ${ruanganBarangId} not found`,
+        `Koleksi with ID ${ruanganBarangId} not found`,
       );
     }
-    const Peminjaman = await this.peminjamanRepository.findOneBy({
-      id: peminjamanId,
+    const peminjamanBarang = await this.peminjamanBarangRepository.findOneBy({
+      id: peminjamanBarangId,
     });
-    if (!Peminjaman) {
+    if (!RuanganBarang) {
       throw new NotFoundException(
-        `Peminjaman with ID ${peminjamanId} not found`,
+        `RuanganBarang with ID ${peminjamanBarangId} not found`,
       );
     }
 
     // Buat RuanganBarang baru
-    const peminjamanBarang = this.peminjamanBarangRepository.create({
+    const koleksi = this.koleksiRepository.create({
       ruanganBarang: ruanganBarang,
-      peminjaman: Peminjaman,
+      peminjamanBarang: peminjamanBarang,
       jumlah: jumlah,
     });
 
     // Simpan RuanganBarang ke database
-    const savedPeminjamanBarang = await this.peminjamanBarangRepository.save(
-      peminjamanBarang,
-    );
+    const savedKoleksi = await this.koleksiRepository.save(koleksi);
 
     // Dapatkan entitas yang disimpan beserta relasinya
-    const result = await this.peminjamanBarangRepository
-      .createQueryBuilder('peminjamanBarang')
-      .leftJoinAndSelect('peminjamanBarang.ruanganBarang', 'ruanganBarang')
-      .leftJoinAndSelect('peminjamanBarang.peminjaman', 'peminjaman')
-      .where('peminjamanBarang.id = :id', { id: savedPeminjamanBarang.id })
+    const result = await this.koleksiRepository
+      .createQueryBuilder('koleksi')
+      .leftJoinAndSelect('koleksi.ruanganBarang', 'ruanganBarang')
+      .leftJoinAndSelect('koleksi.peminjamanBarang', 'peminjamanBarang')
+      .where('koleksi.id = :id', { id: savedKoleksi.id })
       .getOneOrFail();
 
     return result;
   }
 
   findAll() {
-    return this.peminjamanBarangRepository.findAndCount();
+    return this.koleksiRepository.findAndCount();
   }
 
   async findOne(id: string) {
     try {
-      return await this.peminjamanBarangRepository.findOneOrFail({
+      return await this.koleksiRepository.findOneOrFail({
         where: {
           id,
         },
@@ -95,12 +91,9 @@ export class PeminjamanBarangService {
     }
   }
 
-  async update(
-    id: string,
-    updatePeminjamanBarangDto: UpdatePeminjamanBarangDto,
-  ) {
+  async update(id: string, updateKoleksiDto: UpdateKoleksiDto) {
     try {
-      await this.peminjamanBarangRepository.findOneOrFail({
+      await this.koleksiRepository.findOneOrFail({
         where: {
           id,
         },
@@ -119,9 +112,9 @@ export class PeminjamanBarangService {
       }
     }
 
-    await this.peminjamanBarangRepository.update(id, updatePeminjamanBarangDto);
+    await this.koleksiRepository.update(id, updateKoleksiDto);
 
-    return this.peminjamanBarangRepository.findOneOrFail({
+    return this.koleksiRepository.findOneOrFail({
       where: {
         id,
       },
@@ -130,7 +123,7 @@ export class PeminjamanBarangService {
 
   async remove(id: string) {
     try {
-      await this.peminjamanBarangRepository.findOneOrFail({
+      await this.koleksiRepository.findOneOrFail({
         where: {
           id,
         },
@@ -149,6 +142,6 @@ export class PeminjamanBarangService {
       }
     }
 
-    await this.peminjamanBarangRepository.softDelete(id);
+    await this.koleksiRepository.softDelete(id);
   }
 }

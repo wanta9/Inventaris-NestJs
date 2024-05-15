@@ -1,11 +1,11 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CreatePeminjamanBarangDto {
+export class CreateKoleksiDto {
   @IsNotEmpty()
   ruanganBarangId: string;
 
   @IsNotEmpty()
-  peminjamanId: string;
+  peminjamanBarangId: string;
 
   @IsNotEmpty()
   jumlah: number;

@@ -11,7 +11,6 @@ import { RuanganBarang } from './entities/ruangan-barang.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ruangan } from '#/ruangan/entities/ruangan.entity';
 import { Barang } from '#/barang/entities/barang.entity';
-import { CreateBarangDto } from '#/barang/dto/create-barang.dto';
 
 @Injectable()
 export class ruanganBarangService {
