@@ -9,6 +9,9 @@ import { HealthModule } from './health/health.module';
 import configuration from './config/configuration';
 import * as pino from 'pino';
 import { SeederModule } from '#/seeder/seeder.module';
+import { LetakBarangModule } from './letak-barang/letak-barang.module';
+import { User } from './users/entities/user.entity';
+import postgres from 'postgres';
 
 @Module({
   imports: [
@@ -89,13 +92,14 @@ import { SeederModule } from '#/seeder/seeder.module';
           autoLoadEntities: true,
           logging: false,
           namingStrategy: new SnakeNamingStrategy(),
-        };
+};
       },
       inject: [ConfigService],
     }),
     SeederModule,
     UsersModule,
     HealthModule,
+    LetakBarangModule,
   ],
 })
 export class AppModule {}
