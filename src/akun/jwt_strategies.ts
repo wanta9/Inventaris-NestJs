@@ -21,7 +21,7 @@ export class JwtSrategy extends PassportStrategy(Strategy) {
   }
   async validate(payload: any) {
     const exisUserData = await this.userRepository.findOne({
-      where: { username: payload.exisUser.username },
+      where: { username: payload.existUser.username },
     });
     if (!exisUserData) {
       throw new HttpException(
@@ -33,6 +33,11 @@ export class JwtSrategy extends PassportStrategy(Strategy) {
         HttpStatus.UNAUTHORIZED,
       );
     }
-    return exisUserData;
+    return {
+      nama: exisUserData.nama,
+      username: exisUserData.username,
+      id: exisUserData.id,
+      role: exisUserData.peran.Role,
+    };
   }
 }

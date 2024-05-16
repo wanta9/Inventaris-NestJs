@@ -35,7 +35,12 @@ export class AkunService {
       ) {
         const accessToken = this.jwtService.sign(
           {
-            existUser,
+            existUser: {
+              id: existUser.id,
+              nama: existUser.nama,
+              username: existUser.username,
+              role: existUser.peran.Role,
+            },
           },
           {
             secret: '123',
