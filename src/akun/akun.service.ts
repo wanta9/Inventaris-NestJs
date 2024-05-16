@@ -44,6 +44,7 @@ export class AkunService {
           },
           {
             secret: '123',
+            expiresIn: '1d',
           },
         );
         return accessToken;
