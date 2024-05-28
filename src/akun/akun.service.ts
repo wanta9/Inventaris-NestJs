@@ -7,6 +7,9 @@ import { statusBarang } from './entities/akun.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Peran } from '#/peran/entities/peran.entity';
 import * as bcrypt from 'bcryptjs';
+import { LoginDto } from './dto/login.dto';
+import { JwtService } from '@nestjs/jwt';
+import { error } from 'console';
 
 @Injectable()
 export class AkunService {
@@ -15,7 +18,49 @@ export class AkunService {
     private akunRepository: Repository<Akun>,
     @InjectRepository(Peran)
     private peranRepository: Repository<Peran>,
+    private jwtService: JwtService,
   ) {}
+
+  async login(loginDto: LoginDto) {
+    try {
+      const existUser = await this.akunRepository
+        .createQueryBuilder('akun')
+        .innerJoinAndSelect('akun.peran', 'peran')
+        .where('akun.username = :username', { username: loginDto.username })
+        .getOneOrFail();
+
+      if (
+        existUser &&
+        (await bcrypt.compare(loginDto.password, existUser.password))
+      ) {
+        const accessToken = this.jwtService.sign(
+          {
+            existUser: {
+              id: existUser.id,
+              nama: existUser.nama,
+              username: existUser.username,
+              role: existUser.peran.Role,
+            },
+          },
+          {
+            secret: '123',
+            expiresIn: '1d',
+          },
+        );
+        return accessToken;
+      }
+
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.NOT_FOUND,
+          error: 'Username or Password is incorrect',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    } catch (e) {
+      throw e;
+    }
+  }
 
   async create(createAkunDto: CreateAkunDto) {
     const peran = await this.peranRepository.findOneOrFail({

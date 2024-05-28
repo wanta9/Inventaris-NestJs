@@ -9,11 +9,9 @@ import { HealthModule } from './health/health.module';
 import configuration from './config/configuration';
 import * as pino from 'pino';
 import { SeederModule } from '#/seeder/seeder.module';
-<<<<<<< HEAD
 import { LetakBarangModule } from './letak-barang/letak-barang.module';
 import { User } from './users/entities/user.entity';
 import postgres from 'postgres';
-=======
 import { PeminjamModule } from './peminjam/peminjam.module';
 import { BarangModule } from './barang/barang.module';
 import { RuanganModule } from './ruangan/ruangan.module';
@@ -27,7 +25,6 @@ import { BarangRusakModule } from './barang-rusak/barang-rusak.module';
 import { PeminjamanBarangModule } from './peminjaman-barang/peminjaman-barang.module';
 import { PeminjamanModule } from './peminjaman/peminjaman.module';
 import { KoleksiModule } from './koleksi/koleksi.module';
->>>>>>> fe75c8921a96f7e284a87be73b094d88d418217b
 
 @Module({
   imports: [
@@ -108,16 +105,14 @@ import { KoleksiModule } from './koleksi/koleksi.module';
           autoLoadEntities: true,
           logging: false,
           namingStrategy: new SnakeNamingStrategy(),
-};
+        };
       },
       inject: [ConfigService],
     }),
     SeederModule,
     UsersModule,
     HealthModule,
-<<<<<<< HEAD
     LetakBarangModule,
-=======
     PeminjamModule,
     BarangModule,
     RuanganModule,
@@ -131,7 +126,6 @@ import { KoleksiModule } from './koleksi/koleksi.module';
     PeminjamanBarangModule,
     PeminjamanModule,
     KoleksiModule,
->>>>>>> fe75c8921a96f7e284a87be73b094d88d418217b
   ],
 })
 export class AppModule {}

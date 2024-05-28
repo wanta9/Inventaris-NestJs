@@ -8,13 +8,17 @@ import {
   Delete,
   ParseUUIDPipe,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateAkunDto } from './dto/create-akun.dto';
 import { UpdateAkunDto } from './dto/update-akun.dto';
 import { AkunService } from './akun.service';
+import { LoginDto } from './dto/login.dto';
+import { AuthGuard } from '@nestjs/passport';
 @Controller('akun')
 export class AkunController {
   constructor(private readonly akunService: AkunService) {}
+
   @Post()
   async create(@Body() createAkunDto: CreateAkunDto) {
     createAkunDto.status = createAkunDto.status.toLowerCase();
@@ -24,7 +28,14 @@ export class AkunController {
       message: 'success',
     };
   }
+
+  @Post('/login')
+  async login(@Body() login: LoginDto) {
+    return this.akunService.login(login);
+  }
+
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   async findAll() {
     const [data, count] = await this.akunService.findAll();
 
