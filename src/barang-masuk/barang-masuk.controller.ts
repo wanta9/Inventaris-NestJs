@@ -51,6 +51,7 @@ export class BarangMasukController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateBarangMasukDto: UpdateBarangMasukDto,
@@ -63,6 +64,7 @@ export class BarangMasukController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     await this.barangMasukService.remove(id);
 

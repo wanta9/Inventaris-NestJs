@@ -19,6 +19,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class KoleksiController {
   constructor(private readonly koleksiService: KoleksiService) {}
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async create(@Body() CreatekoleksiDto: CreateKoleksiDto) {
     return {
       data: await this.koleksiService.create(CreatekoleksiDto),
@@ -40,6 +41,7 @@ export class KoleksiController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() UpdateKoleksiDto: UpdateKoleksiDto,
@@ -52,6 +54,7 @@ export class KoleksiController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     await this.koleksiService.remove(id);
 

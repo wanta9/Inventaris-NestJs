@@ -19,6 +19,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class PeranController {
   constructor(private readonly peranService: peranService) {}
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async create(@Body() CreatePeranDto: CreatePeranDto) {
     CreatePeranDto.Peran = CreatePeranDto.Peran.toLowerCase();
     return {
@@ -41,6 +42,7 @@ export class PeranController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePeranDto: UpdatePeranDto,
@@ -53,6 +55,7 @@ export class PeranController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     await this.peranService.remove(id);
 

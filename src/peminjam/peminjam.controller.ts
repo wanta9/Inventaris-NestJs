@@ -40,6 +40,7 @@ export class PeminjamController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePeminjamDto: UpdatePeminjamDto,
@@ -52,6 +53,7 @@ export class PeminjamController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     await this.peminjamService.remove(id);
 

@@ -21,6 +21,7 @@ export class PeminjamanBarangController {
     private readonly peminjamanBarangService: PeminjamanBarangService,
   ) {}
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async create(@Body() CreatepeminjamanBarangDto: CreatePeminjamanBarangDto) {
     return {
       data: await this.peminjamanBarangService.create(
@@ -44,6 +45,7 @@ export class PeminjamanBarangController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() UpdatepeminjamanBarangDto: UpdatePeminjamanBarangDto,
@@ -59,6 +61,7 @@ export class PeminjamanBarangController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     await this.peminjamanBarangService.remove(id);
 

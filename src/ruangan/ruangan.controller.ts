@@ -19,6 +19,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class RuanganController {
   constructor(private readonly ruanganService: ruanganService) {}
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async create(@Body() CreateRuanganDto: CreateRuanganDto) {
     return {
       data: await this.ruanganService.create(CreateRuanganDto),
@@ -40,6 +41,7 @@ export class RuanganController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateRuanganDto: UpdateRuanganDto,
@@ -52,6 +54,7 @@ export class RuanganController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     await this.ruanganService.remove(id);
 

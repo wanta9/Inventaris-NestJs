@@ -19,6 +19,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class PetugasController {
   constructor(private readonly petugasService: PetugasService) {}
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async create(@Body() CreatepetugasDto: CreatePetugasDto) {
     return {
       data: await this.petugasService.create(CreatepetugasDto),
@@ -40,6 +41,7 @@ export class PetugasController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePetugasDto: UpdatePetugasDto,
@@ -52,6 +54,7 @@ export class PetugasController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     await this.petugasService.remove(id);
 

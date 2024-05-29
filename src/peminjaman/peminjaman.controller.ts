@@ -19,6 +19,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class PeminjamanController {
   constructor(private readonly peminjamanService: PeminjamanService) {}
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async create(@Body() CreatepeminjamanDto: CreatePeminjamanDto) {
     return {
       data: await this.peminjamanService.create(CreatepeminjamanDto),
@@ -40,6 +41,7 @@ export class PeminjamanController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() UpdatepeminjamanDto: UpdatePeminjamanDto,
@@ -52,6 +54,7 @@ export class PeminjamanController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     await this.peminjamanService.remove(id);
 

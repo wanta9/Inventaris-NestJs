@@ -48,6 +48,7 @@ export class AkunController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateAkunDto: UpdateAkunDto,
@@ -60,6 +61,7 @@ export class AkunController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     await this.akunService.remove(id);
 

@@ -20,6 +20,7 @@ export class LetakBarangController {
   constructor(private readonly letakbarangService: LetakBarangService) {}
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async create(@Body() createLetakBarangDto: CreateLetakBarangDto) {
     return {
       data: await this.letakbarangService.create(createLetakBarangDto),
@@ -51,6 +52,7 @@ export class LetakBarangController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateLetakBarangDto: UpdateLetakBarangDto,
@@ -63,6 +65,7 @@ export class LetakBarangController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     await this.letakbarangService.remove(id);
 
