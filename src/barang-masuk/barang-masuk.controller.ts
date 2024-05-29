@@ -8,10 +8,12 @@ import {
   Delete,
   ParseUUIDPipe,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { BarangMasukService } from './barang-masuk.service';
 import { CreateBarangMasukDto } from './dto/create-barang-masuk.dto';
 import { UpdateBarangMasukDto } from './dto/update-barang-masuk.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('barangMasuk')
 export class BarangMasukController {
@@ -27,6 +29,7 @@ export class BarangMasukController {
   }
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   async findAll() {
     const [data, count] = await this.barangMasukService.findAll();
 

@@ -8,10 +8,12 @@ import {
   Delete,
   ParseUUIDPipe,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { PeminjamService } from './peminjam.service';
 import { CreatePeminjamDto } from './dto/create-peminjam.dto';
 import { UpdatePeminjamDto } from './dto/update-peminjam.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('peminjam')
 export class PeminjamController {
@@ -25,6 +27,7 @@ export class PeminjamController {
     };
   }
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   async findAll() {
     const [data, count] = await this.peminjamService.findAll();
 

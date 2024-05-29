@@ -22,6 +22,7 @@ export class JwtSrategy extends PassportStrategy(Strategy) {
   async validate(payload: any) {
     const exisUserData = await this.userRepository.findOne({
       where: { username: payload.existUser.username },
+      relations: ['peran'],
     });
     if (!exisUserData) {
       throw new HttpException(

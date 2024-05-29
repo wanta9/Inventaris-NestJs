@@ -8,10 +8,12 @@ import {
   Delete,
   ParseUUIDPipe,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { peranService } from './peran.service';
 import { CreatePeranDto } from './dto/create-peran.dto';
 import { UpdatePeranDto } from './dto/update-peran.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('peran')
 export class PeranController {
@@ -26,6 +28,7 @@ export class PeranController {
     };
   }
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   async findAll() {
     const [data, count] = await this.peranService.findAll();
 

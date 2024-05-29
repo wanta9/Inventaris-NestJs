@@ -8,10 +8,12 @@ import {
   Delete,
   ParseUUIDPipe,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { PetugasService } from './petugas.service';
 import { CreatePetugasDto } from './dto/create-petugas.dto';
 import { UpdatePetugasDto } from './dto/update-petugas.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('petugas')
 export class PetugasController {
@@ -25,6 +27,7 @@ export class PetugasController {
     };
   }
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   async findAll() {
     const [data, count] = await this.petugasService.findAll();
 
