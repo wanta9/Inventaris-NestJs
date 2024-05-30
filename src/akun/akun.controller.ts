@@ -31,7 +31,12 @@ export class AkunController {
 
   @Post('/login')
   async login(@Body() login: LoginDto) {
-    return this.akunService.login(login);
+    const data = await this.akunService.login(login);
+    return {
+      data: data,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get()

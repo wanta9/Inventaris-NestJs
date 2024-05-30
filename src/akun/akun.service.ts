@@ -28,11 +28,12 @@ export class AkunService {
         .innerJoinAndSelect('akun.peran', 'peran')
         .where('akun.username = :username', { username: loginDto.username })
         .getOneOrFail();
+      const isRightPassword = await bcrypt.compare(
+        loginDto.password,
+        existUser.password,
+      );
 
-      if (
-        existUser &&
-        (await bcrypt.compare(loginDto.password, existUser.password))
-      ) {
+      if (existUser && isRightPassword) {
         const accessToken = this.jwtService.sign(
           {
             existUser: {
@@ -52,13 +53,23 @@ export class AkunService {
 
       throw new HttpException(
         {
-          statusCode: HttpStatus.NOT_FOUND,
+          statusCode: HttpStatus.BAD_REQUEST,
           error: 'Username or Password is incorrect',
         },
         HttpStatus.NOT_FOUND,
       );
     } catch (e) {
-      throw e;
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
     }
   }
 
