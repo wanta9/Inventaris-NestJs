@@ -103,7 +103,7 @@ import { KoleksiModule } from './koleksi/koleksi.module';
           entities: [],
           synchronize: configService.get<string>('env') === 'development',
           autoLoadEntities: true,
-          logging: false,
+          logging: true,
           namingStrategy: new SnakeNamingStrategy(),
         };
       },

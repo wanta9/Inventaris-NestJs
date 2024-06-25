@@ -42,16 +42,22 @@ export class BarangKeluarService {
   }
 
   findAll() {
-    return this.barangKeluarRepository.findAndCount();
+    return this.barangKeluarRepository
+      .createQueryBuilder('barangKeluar')
+      .leftJoinAndSelect('barangKeluar.ruanganBarang', 'ruanganBarang')
+      .leftJoinAndSelect('ruanganBarang.ruangan', 'ruangan')
+      .leftJoinAndSelect('ruanganBarang.barang', 'barang')
+      .getManyAndCount();
   }
 
   async findOne(id: string) {
     try {
-      return await this.barangKeluarRepository.findOneOrFail({
-        where: {
-          id,
-        },
-      });
+      return this.barangKeluarRepository
+        .createQueryBuilder('barangKeluar')
+        .leftJoinAndSelect('barangKeluar.ruanganBarang', 'ruanganBarang')
+        .leftJoinAndSelect('ruanganBarang.ruangan', 'ruangan')
+        .leftJoinAndSelect('ruanganBarang.barang', 'barang')
+        .getOne();
     } catch (e) {
       if (e instanceof EntityNotFoundError) {
         throw new HttpException(

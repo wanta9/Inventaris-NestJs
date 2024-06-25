@@ -37,16 +37,20 @@ export class PetugasService {
   }
 
   findAll() {
-    return this.petugasRepository.findAndCount();
+    return this.petugasRepository
+      .createQueryBuilder('petugas')
+      .leftJoinAndSelect('petugas.akun', 'akun')
+      .leftJoinAndSelect('akun.peran', 'peran')
+      .getManyAndCount();
   }
 
   async findOne(id: string) {
     try {
-      return await this.petugasRepository.findOneOrFail({
-        where: {
-          id,
-        },
-      });
+      return this.petugasRepository
+        .createQueryBuilder('petugas')
+        .leftJoinAndSelect('petugas.akun', 'akun')
+        .leftJoinAndSelect('akun.peran', 'peran')
+        .getOne();
     } catch (e) {
       if (e instanceof EntityNotFoundError) {
         throw new HttpException(

@@ -38,16 +38,20 @@ export class PeminjamService {
   }
 
   findAll() {
-    return this.peminjamRepository.findAndCount();
+    return this.peminjamRepository
+      .createQueryBuilder('peminjam')
+      .leftJoinAndSelect('peminjam.akun', 'akun')
+      .leftJoinAndSelect('akun.peran', 'peran')
+      .getManyAndCount();
   }
 
   async findOne(id: string) {
     try {
-      return await this.peminjamRepository.findOneOrFail({
-        where: {
-          id,
-        },
-      });
+      return this.peminjamRepository
+        .createQueryBuilder('peminjam')
+        .leftJoinAndSelect('peminjam.akun', 'akun')
+        .leftJoinAndSelect('akun.peran', 'peran')
+        .getOne();
     } catch (e) {
       if (e instanceof EntityNotFoundError) {
         throw new HttpException(

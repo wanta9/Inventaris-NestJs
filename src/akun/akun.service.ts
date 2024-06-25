@@ -125,11 +125,11 @@ export class AkunService {
 
   async findOne(id: string) {
     try {
-      return await this.akunRepository.findOneOrFail({
-        where: {
-          id,
-        },
-      });
+      return this.akunRepository
+        .createQueryBuilder('akun')
+        .leftJoinAndSelect('akun.peran', 'peran')
+        .where('akun.id = :id', { id: id })
+        .getOne();
     } catch (e) {
       if (e instanceof EntityNotFoundError) {
         throw new HttpException(

@@ -32,9 +32,20 @@ export class RuanganBarangController {
   async findAll() {
     const [data, count] = await this.ruanganBarangService.findAll();
 
+    console.log('Result:', data);
+    console.log('Total:', count);
     return {
       data,
       count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
+  }
+
+  @Get(':id')
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.ruanganBarangService.findOne(id),
       statusCode: HttpStatus.OK,
       message: 'success',
     };

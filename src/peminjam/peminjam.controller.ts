@@ -39,6 +39,15 @@ export class PeminjamController {
     };
   }
 
+  @Get(':id')
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.peminjamService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
+  }
+
   @Put(':id')
   @UseGuards(AuthGuard('jwt'))
   async update(

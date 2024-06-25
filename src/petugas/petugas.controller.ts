@@ -40,6 +40,15 @@ export class PetugasController {
     };
   }
 
+  @Get(':id')
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.petugasService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
+  }
+
   @Put(':id')
   @UseGuards(AuthGuard('jwt'))
   async update(

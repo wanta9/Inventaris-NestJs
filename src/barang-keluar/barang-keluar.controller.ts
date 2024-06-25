@@ -40,6 +40,15 @@ export class BarangKeluarController {
     };
   }
 
+  @Get(':id')
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.barangKeluarService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
+  }
+
   @Put(':id')
   @UseGuards(AuthGuard('jwt'))
   async update(

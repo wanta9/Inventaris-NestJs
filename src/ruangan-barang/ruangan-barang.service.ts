@@ -64,16 +64,20 @@ export class ruanganBarangService {
   }
 
   findAll() {
-    return this.ruanganBarangRepository.findAndCount();
+    return this.ruanganBarangRepository
+      .createQueryBuilder('ruanganBarang')
+      .leftJoinAndSelect('ruanganBarang.ruangan', 'ruangan')
+      .leftJoinAndSelect('ruanganBarang.barang', 'barang')
+      .getManyAndCount();
   }
 
   async findOne(id: string) {
     try {
-      return await this.ruanganBarangRepository.findOneOrFail({
-        where: {
-          id,
-        },
-      });
+      return await this.ruanganBarangRepository
+        .createQueryBuilder('ruanganBarang')
+        .leftJoinAndSelect('ruanganBarang.ruangan', 'ruangan')
+        .leftJoinAndSelect('ruanganBarang.barang', 'barang')
+        .getOne();
     } catch (e) {
       if (e instanceof EntityNotFoundError) {
         throw new HttpException(

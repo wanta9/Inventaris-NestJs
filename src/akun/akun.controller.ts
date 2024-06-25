@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   HttpStatus,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { CreateAkunDto } from './dto/create-akun.dto';
 import { UpdateAkunDto } from './dto/update-akun.dto';
@@ -47,6 +48,17 @@ export class AkunController {
     return {
       data,
       count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
+  }
+  @Get('/authorize')
+  @UseGuards(AuthGuard('jwt'))
+  async findOne(@Req() req) {
+    const data = await this.akunService.findOne(req.user.id);
+
+    return {
+      data,
       statusCode: HttpStatus.OK,
       message: 'success',
     };
